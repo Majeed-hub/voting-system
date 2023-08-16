@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+            .header{
+                text-align: center;
+                margin-bottom: 20px;
+                background-color: cadetblue;
+                padding: 10px;
+                display: flex;
+                flex-direction: row;
+            }
+            h2{
+                width: 85%;
+                
+
+            }
+            .side{
+                width: 15%;
+                margin-top: 6px;
+            }
+            button > a{
+                text-decoration: none;
+                color: white;
+            }
+            
+            form{
+                width: 50%;
+                margin: auto;
+            }
+        </style>
+</head>
+
+<body>
+    <div class="header"><h2>Administrator</h2><div class="side"><button class="btn btn-primary"><a href="results.html">view results</a></button></div></div>
+    <form id="addCandidateForm" >
+        <div class="mb-3">
+            <label for="name" class="form-label">Candidate Name:</label>
+            <input type="text" id="name" class="form-control" required>
+            <br>
+            <label for="photoAddress" class="form-label">Photo Address:</label>
+            <input type="file" class="form-control" id="photoAddress" required>
+            <br>
+            <button type="submit" class="btn btn-primary ">Add Candidate</button>
+        </div>
+        
+    </form>
+    <div id="result"></div>
+    <script>
+        const addCandidateForm = document.getElementById("addCandidateForm");
+        const result_el = document.getElementById("result");
+
+
+
+        addCandidateForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const photoAddress = document.getElementById("photoAddress");
+        
+            const fileName = './../assets/images/' + photoAddress.files[0].name;
+            console.log(fileName)
+            result_el.textContent = fileName;
+
+            const newCandidate = {
+                name: name,
+                photo_address: fileName
+            };
+
+            const apiEndpoint = "http://127.0.0.1:5000/candidates"; 
+
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(newCandidate)
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    console.log("API Response:", responseData);
+
+                    
+
+                    document.getElementById("name").value = "";
+                    document.getElementById("photoAddress").value = "";
+                } else {
+                    console.error("API Error:", response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>

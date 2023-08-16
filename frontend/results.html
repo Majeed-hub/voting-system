@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <style>
+            *{
+                padding: 0;
+                margin: 0;
+            }
+            h2{
+                text-align: center;
+                margin-bottom: 20px;
+                background-color: cadetblue;
+                padding: 10px;
+            }
+            img{
+                width: 250px;
+                height: 270px;
+                object-fit: cover;
+            }
+        </style>
+</head>
+
+<body>
+    <h2>Voting Results</h2>
+    <div id="result" class="d-flex flex-row justify-content-evenly"></div>
+    <script>
+        let resultDiv = document.querySelector("#result");
+        async function displayVoteResults() {
+            
+            const apiEndpoint = "http://127.0.0.1:5000/vote_count"; 
+
+            try {
+                const response = await fetch(apiEndpoint);
+                const responseData = await response.json();
+
+                console.log("Response Data:", responseData);
+
+                if (response.ok) {
+        //             const resultsHTML = responseData.results.map(result => `
+        //   <p>Candidate ${result.candidate_id}: ${result.votes} votes</p>`).join('');
+                    let resultsHTML = ``
+                    responseData.forEach(element => {
+                        resultsHTML += `<div class="card" style="width: 18rem;">
+                        <img class="card-img-top " src = "./../assets/images/image_1.jpg" alt = "Card image cap">
+                            <div class="card-body"><p class="body-text fs-4">Name : ${element.name} <br> Votes : ${element.vote_count}</p> </div></div>`
+                    });
+                    resultDiv.innerHTML = resultsHTML;
+                } else {
+                    console.error("API Error:", response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+            }
+        }
+
+        // Initial display of vote results
+        displayVoteResults();
+    </script>
+</body>
+
+</html>

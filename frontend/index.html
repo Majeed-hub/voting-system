@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+    <link rel="stylesheet" href="candidate_card.css">
+</head>
+
+<body>
+    <form id="votingForm"><ul><div id="container"></div></ul>
+        <div style="height: 20vh;display: flex;justify-content: center;align-items: center;">
+
+            <button type="submit">Submit Votes</button>
+        </div>
+    </form>
+
+    <script>
+        const container = document.getElementById("container");
+        const form = document.getElementById("votingForm");
+
+        fetch("http://127.0.0.1:5000/candidates") 
+            .then(response => response.json())
+            .then(candidates => {
+                candidates.forEach((candidate, index) => {
+                    const candidateContainer = document.createElement("li");
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.name = "candidate";
+                    checkbox.value = candidate.id; 
+                    checkbox.setAttribute("id", candidate.id)
+                    checkbox.addEventListener("change", playBeep);
+                    candidateContainer.appendChild(checkbox);
+
+                    const label = document.createElement("label");
+                    label.setAttribute("for", candidate.id)
+                    const image = document.createElement("img");
+                    image.setAttribute("src",candidate.photo_address);
+                    label.appendChild(image);
+                    const label_name = document.createElement("label");
+                    label.setAttribute("for", candidate.id)
+                    label_name.textContent = candidate.name;
+                    
+                    candidateContainer.appendChild(label);
+                    candidateContainer.appendChild(label_name);
+
+
+                    container.appendChild(candidateContainer);
+                });
+            })
+            .catch(error => {
+                console.error("API Error:", error);
+            });
+
+
+        
+        const sendVotesToAPI = (event) => {
+            event.preventDefault();
+
+            const selectedCandidates = Array.from(document.querySelectorAll('input[name="candidate"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            const apiEndpoint = "http://127.0.0.1:5000/vote"; 
+            const data = {
+                votes: selectedCandidates
+            };
+
+            fetch(apiEndpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(responseData => {
+                    console.log("API Response:", responseData);
+                })
+                .catch(error => {
+                    console.error("API Error:", error);
+                });
+        };
+
+        // Add submit event listener to the form
+        form.addEventListener("submit", sendVotesToAPI);
+
+
+        function playBeep() {
+                const audio = new Audio('./../assets/audios/beep.wav'); // Replace with the path to your beep sound file
+                audio.play();
+            }
+    </script>
+</body>
+
+</html>

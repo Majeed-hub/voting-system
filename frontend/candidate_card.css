@@ -1,0 +1,85 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+ul {
+    list-style-type: none;
+}
+
+li {
+    display: inline-block;
+}
+
+input[type="checkbox"][id] {
+    display: none;
+}
+
+label {
+    border: 1px solid #fff;
+    /*   border: 1px solid red; */
+
+    padding: 10px;
+    text-align: center;
+    display: block;
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+}
+
+label:before {
+    background-color: white;
+    color: white;
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    border: 1px solid gray;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 28px;
+    transition-duration: 0.4s;
+    transform: scale(0);
+}
+
+label img {
+    height: 270px;
+    width: 250px;
+    transition-duration: 0.2s;
+    transform-origin: 50% 50%;
+    object-fit: cover;
+}
+
+:checked+label {
+    border: 2px solid green;
+}
+
+:checked+label:before {
+    content: "✓";
+    background-color: gray;
+    transform: scale(1.5);
+    z-index: +3;
+}
+
+:checked+label img {
+    transform: scale(0.9);
+    /* box-shadow: 0 0 5px #333; */
+    z-index: -10;
+
+}
+
+button{
+    padding: 15px;
+    width: 50%;
+    background-color: darkred;
+    font-size: large;
+    color: #fff;
+    border-radius: 7px;
+    border: none;
+    height: 50px;
+}
+#votingForm{
+    text-align: center;
+}
