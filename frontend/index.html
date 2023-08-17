@@ -7,9 +7,26 @@
     <title>Vote</title>
     <link rel="stylesheet" href="candidate_card.css">
     <link rel="stylesheet" href="./loader.css">
+
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        h2{
+                text-align: center;
+                margin-bottom: 20px;
+                background-color: cadetblue;
+                padding: 10px;
+                font-family: Verdana, sans-serif;
+                font-size: 30px;
+                font-weight: 500;
+            }
+    </style>
 </head>
 
 <body>
+    <h2>Saudi Jamat Voting</h2>
     <form id="votingForm"><ul><div id="container"></div></ul>
         <div style="height: 20vh;display: flex;justify-content: center;align-items: center;">
 
@@ -71,7 +88,7 @@
            
             const selectedCandidates = Array.from(document.querySelectorAll('input[name="candidate"]:checked'))
                 .map(checkbox => checkbox.value);
-                
+
                 if(selectedCandidates.length !== 0){
                         // for voting
                     playThanks();
@@ -97,7 +114,8 @@
                             .catch(error => {
                                 console.error("API Error:", error);
                             });
-                    }, 10000);
+                    }, 5000);
+                   
 
                 }
 
