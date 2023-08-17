@@ -44,6 +44,17 @@ def add_candidate():
     else:
         return jsonify({'error': 'Candidate name is required'}), 400
     
+    # Delete an assignment
+@app.route("/remove/<int:id>", methods=["DELETE"])
+def remove_candidate(id):
+    conn = sqlite3.connect('voting_system.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM votes WHERE candidate_id=?", (id,))
+    cursor.execute("DELETE FROM candidates WHERE id=?", (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Candidate removed successfully"}), 200
+    
 # Get all candidates
 @app.route('/candidates', methods=['GET'])
 def get_candidates():

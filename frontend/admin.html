@@ -42,7 +42,7 @@
 </head>
 
 <body>
-    <div class="header"><h2>Administrator</h2><div class="side"><button class="btn btn-primary"><a href="results.html">view results</a></button></div></div>
+    <div class="header"><h2>Administrator</h2><div class="side"><button class="btn btn-primary"><a href="results.html" target="_blank">view results</a></button></div></div>
     <form id="addCandidateForm" >
         <div class="mb-3">
             <label for="name" class="form-label">Candidate Name:</label>
@@ -103,6 +103,39 @@
                 console.error("API Error:", error);
             }
         });
+    
+        // code to remove a candidate
+
+            const deleteButton = document.getElementById("deleteButton");
+
+            deleteButton.addEventListener("click", () => {
+                const candidateId = 1; // Replace with the actual candidate ID you want to delete
+
+                // Attach event listeners to each delete button
+                deleteButtons.forEach(button => {
+                    button.addEventListener("click", function () {
+                        const candidateId = this.getAttribute("data-id");
+                        // create buttons with attribute data-id and canadidate id as its value
+                        deleteCandidate(candidateId); // Call the function with the candidate ID
+                    });
+                });
+
+                fetch(`/remove/${candidateId}`, {
+                    method: "DELETE"
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Candidate deleted successfully");
+                            // Optionally: Update the UI or refresh the candidate list
+                        } else {
+                            console.error("Failed to delete candidate");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("An error occurred:", error);
+                    });
+            });
+
     </script>
 </body>
 

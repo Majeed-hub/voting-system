@@ -28,7 +28,7 @@
 
 <body>
     <h2>Voting Results</h2>
-    <div id="result" class="d-flex flex-row justify-content-evenly"></div>
+    <div id="result" class="d-flex flex-row justify-content-start flex-wrap "></div>
     <script>
         let resultDiv = document.querySelector("#result");
         async function displayVoteResults() {
@@ -46,7 +46,7 @@
         //   <p>Candidate ${result.candidate_id}: ${result.votes} votes</p>`).join('');
                     let resultsHTML = ``
                     responseData.forEach(element => {
-                        resultsHTML += `<div class="card" style="width: 18rem;">
+                        resultsHTML += `<div class="card my-3 mx-3" style="width: 18rem;">
                         <img class="card-img-top " src = "./../assets/images/image_1.jpg" alt = "Card image cap">
                             <div class="card-body"><p class="body-text fs-4">Name : ${element.name} <br> Votes : ${element.vote_count}</p> </div></div>`
                     });
