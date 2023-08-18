@@ -33,12 +33,12 @@
 
         //redirect to authenticate
 
-            let sessionCondition = "false";
-            sessionCondition = sessionStorage.getItem('loggedIn');
-
-            if (sessionCondition === 'false') {
+            
+            let sessionCondition = localStorage.getItem('loggedIn') ? localStorage.getItem('loggedIn') : "false";
+            if (sessionCondition == 'false') {
+                console.log(sessionCondition)
                 // Perform redirection
-                window.location.href = 'http://127.0.0.1:5500/frontend/login.html';
+                window.location.assign('http://127.0.0.1:5500/frontend/login.html');
             }
 
 

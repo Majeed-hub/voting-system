@@ -60,24 +60,25 @@
         let password = document.querySelector("#password").value;
 
         if (username == "majeed" && password == "12345"){
-            alert("login successful",window.location)
-            sessionStorage.setItem('loggedIn', 'true');
+            // alert("login successful",window.location)
+            localStorage.setItem('loggedIn', 'true');
         }
         else{
             // alert("user doesn't exists")
-            sessionStorage.setItem('loggedIn', 'false');
+            localStorage.setItem('loggedIn', 'false');
 
         }
+        let sessionCondition = localStorage.getItem('loggedIn');
+
+            if (sessionCondition == 'true') {
+                // Perform redirection
+                window.location.assign('http://127.0.0.1:5500/frontend/admin.html');
+            }
 
         })
         
 
-        let sessionCondition = sessionStorage.getItem('loggedIn');
-
-        if (sessionCondition === 'true') {
-                // Perform redirection
-                window.location.href = 'http://127.0.0.1:5500/frontend/admin.html'; 
-            }
+        
     </script>
 </body>
 </html>

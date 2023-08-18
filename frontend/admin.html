@@ -55,7 +55,7 @@
     <div class="header">
         <h2>Administrator</h2>
         <div class="side"><button class="btn btn-primary"><a href="results.html" target="_blank">view
-                    results</a></button></div>
+                    results</a></button><button class="btn btn-danger mx-2" id="logout">logout</button></div>
     </div>
     <form id="addCandidateForm">
         <div class="mb-3">
@@ -76,14 +76,20 @@
     <script>
 
         //redirect to authenticate
-            let sessionCondition = "false";
 
-            sessionCondition = sessionStorage.getItem('loggedIn');
+            let sessionCondition = localStorage.getItem('loggedIn') ? localStorage.getItem('loggedIn') : "false";
+                if (sessionCondition == 'false') {
+                    console.log(sessionCondition)
+                    // Perform redirection
+                    window.location.assign('http://127.0.0.1:5500/frontend/login.html');
+                }
 
-            if (sessionCondition === 'false') {
-                // Perform redirection
-                window.location.href = 'http://127.0.0.1:5500/frontend/login.html';
-            }
+            let logoutButton = document.querySelector("#logout");
+            logoutButton.addEventListener("click",()=>{
+                localStorage.clear();
+                location.reload();
+            })
+
 
 
         const addCandidateForm = document.getElementById("addCandidateForm");
