@@ -30,6 +30,18 @@
     <h2>Voting Results</h2>
     <div id="result" class="d-flex flex-row justify-content-start flex-wrap "></div>
     <script>
+
+        //redirect to authenticate
+
+            let sessionCondition = "false";
+            sessionCondition = sessionStorage.getItem('loggedIn');
+
+            if (sessionCondition === 'false') {
+                // Perform redirection
+                window.location.href = 'http://127.0.0.1:5500/frontend/login.html';
+            }
+
+
         let resultDiv = document.querySelector("#result");
         async function displayVoteResults() {
             
