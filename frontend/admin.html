@@ -7,6 +7,7 @@
     <title>Administrator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        
     <style>
         * {
             padding: 0;
@@ -59,8 +60,11 @@
     </div>
     <form id="addCandidateForm">
         <div class="mb-3">
-            <label for="name" class="form-label">Candidate Name:</label>
-            <input type="text" id="name" class="form-control" required>
+            <label for="name" class="form-label">Candidate Arabic Name:</label>
+            <input type="text" id="Fname" class="form-control" required>
+            <br>
+            <label for="name" class="form-label">Candidate English Name:</label>
+            <input type="text" id="Lname" class="form-control" required>
             <br>
             <label for="photoAddress" class="form-label">Photo Address:</label>
             <input type="file" class="form-control" id="photoAddress" required>
@@ -71,7 +75,7 @@
     </form>
     <hr>
     <h1 style="text-align: center;">Candidate List</h1>
-    <div id="result" class="d-flex flex-row justify-content-start flex-wrap ">\
+    <div id="result" class="d-flex flex-row justify-content-center flex-wrap ">\
     </div>
     <script>
 
@@ -100,15 +104,18 @@
         addCandidateForm.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            const name = document.getElementById("name").value;
+            const Fname = document.getElementById("Fname").value;
+            const Lname = document.getElementById("Lname").value;
+
             const photoAddress = document.getElementById("photoAddress");
 
-            const fileName = './../assets/images/' + photoAddress.files[0].name;
+            const fileName = `http://localhost:5500/assets/images/${photoAddress.files[0].name}`;
             console.log(fileName)
             result_el.textContent = fileName;
 
             const newCandidate = {
-                name: name,
+                Fname: Fname,
+                Lname : Lname,
                 photo_address: fileName
             };
 
@@ -129,7 +136,9 @@
 
 
 
-                    document.getElementById("name").value = "";
+                    document.getElementById("Fname").value = "";
+                    document.getElementById("Lname").value = "";
+
                     document.getElementById("photoAddress").value = "";
                 } else {
                     console.error("API Error:", response.status, response.statusText);
@@ -172,23 +181,25 @@
             
         });
 
-        // get all candidates
+            // get all candidates
 
-        fetch("http://127.0.0.1:5000/candidates")
-            .then(response => response.json())
-            .then(candidates => {
-                let resultsHTML = ""
-                candidates.forEach((element, index) => {
-                    resultsHTML += `<div class="card my-3 mx-3" style="width: 18rem;">
-                        <img class="card-img-top " src = "./../assets/images/image_1.jpg" alt = "Card image cap">
-                            <div class="card-body"><p class="body-text fs-4">ID : ${element.id} <br> Name : ${element.name}</p> 
-                                <button class='btn btn-danger' id="deleteButton" data-value= ${element.id} delete-button>delete</button></div></div>`
+            fetch("http://127.0.0.1:5000/candidates")
+                .then(response => response.json())
+                .then(candidates => {
+                    let resultsHTML = ""
+                    candidates.forEach((element, index) => {
+                        let photoUrl = element.photo_address;
+
+                        resultsHTML += `<div class="card my-3 mx-3" style="width: 18rem;">
+                            <img class="card-img-top " src ="${photoUrl}"  alt = "Card image cap">
+                                <div class="card-body"><p class="body-text fs-4">ID : ${element.id} <br> Name : ${element.Fname}<br> Name : ${element.Lname}</p> 
+                                    <button class='btn btn-danger ' id="deleteButton" data-value= ${element.id} delete-button>delete</button></div></div>`
+                    });
+                    result_el.innerHTML += resultsHTML;
+                })
+                .catch(error => {
+                    console.error("API Error:", error);
                 });
-                result_el.innerHTML += resultsHTML;
-            })
-            .catch(error => {
-                console.error("API Error:", error);
-            });
 
     </script>
 </body>
